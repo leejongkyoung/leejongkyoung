@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+	<mapper namespace="boardMapper">
+	
+  		<select id="board" resultType="boardVo">
+			SELECT  BOARD_NO,
+					BOARD_TITLE,
+					BOARD_WRITER,
+					BOARD_REGDATE,
+					BOARD_CONTENT				
+			FROM BOARD
+			ORDER BY BOARD_NO DESC
+		</select>
+		
+		<insert id="boardInsert">
+			INSERT INTO BOARD
+			(
+				BOARD_NO,
+				BOARD_TITLE, 
+				BOARD_WRITER,
+				BOARD_CONTENT,
+				BOARD_REGDATE
+			)
+			VALUES
+			(
+				BOARD_NO.NEXTVAL,
+				#{ boardTitle },
+				#{ boardWriter },
+				#{ boardContent },
+				SYSDATE				   
+			)
+		</insert>
+		
+		<select id="selectBoardDetailByBoardNo" resultType="boardVo">
+			SELECT BOARD_NO,
+				   BOARD_TITLE,
+				   BOARD_WRITER,
+				   BOARD_REGDATE,
+				   BOARD_CONTENT				
+			FROM BOARD
+			WHERE BOARD_NO = #{ boardNo }
+		</select>	
+		
+		<update id="updateContent">
+			UPDATE BOARD
+			SET BOARD_CONTENT = #{ boardContent },
+				BOARD_TITLE = #{ boardTitle }
+			WHERE BOARD_NO = #{ boardNo }
+		</update>
+		
+		<delete id="deletedBoard">
+			DELETE BOARD WHERE BOARD_NO = #{ boardNo }
+		</delete>
+		
+		<delete id="checkDelete">
+			DELETE BOARD WHERE BOARD_NO = #{ selNo }
+		</delete>
+		
+		<update id="merge">
+			MERGE INTO BOARD
+			USING DUAL
+			ON
+			(
+				BOARD_NO = #{ boardNo }
+			)
+			WHEN MATCHED THEN
+								UPDATE
+								SET BOARD_CONTENT = #{ boardContent },
+								BOARD_TITLE = #{ boardTitle }
+								WHERE BOARD_NO = #{ boardNo }
+			WHEN NOT MATCHED THEN
+								INSERT
+								(
+									BOARD_NO,
+									BOARD_TITLE,
+									BOARD_WRITER,
+									BOARD_CONTENT,
+									BOARD_REGDATE
+								)
+								VALUES
+								(
+									BOARD_NO.NEXTVAL,
+									#{ boardTitle },
+									#{ boardWriter },
+									#{ boardContent },
+									SYSDATE
+								)							
+		</update>
+		
+		
+		
+	</mapper>

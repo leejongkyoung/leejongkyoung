@@ -7,7 +7,7 @@
 <html>
 <style>
 .table {
-		width: 900px;
+		width: 700px;
     	clear: both;
     	margin: auto;
 		border: none;
@@ -81,9 +81,9 @@ td:nth-child(7n) {
 		<caption class="year" id="year"></caption>
 		<thead>
 			<tr>
-				<th><input name="preMon" type="button" value="↶"></th>
+				<th><input id="preMon" type="button" value="↶"></th>
 				<th colspan="5" class="year_mon" id="mon"></th>
-				<th><input name="nextMon" type="button" value="↷"></th>
+				<th><input id="nextMon" type="button" value="↷"></th>
 			</tr>
 			<tr>
 				<th>일</th>
@@ -95,7 +95,7 @@ td:nth-child(7n) {
 				<th>토</th>
 			</tr>
 		</thead>
-		<tbody id="calendar-body" class="calendar-body">			
+		<tbody id="calendar-body" class="calendar-body">
 		</tbody>
 	</table>
 	
@@ -153,29 +153,25 @@ $(document).ready(function() {
 	nowDate();
 	buildCalendar();
 });
-
 var today = new Date();
 var date = new Date();   
 function nowDate() {
 	var now = new Date();
 	//$("#yearMon").eq(0).text(now);
-
-    $("input[name=preMon]").click(function() { 
+    $("#preMon").click(function() { 
         $("#calendar > tbody > td").remove();
         $("#calendar > tbody > tr").remove();
         today = new Date ( today.getFullYear(), today.getMonth()-1, today.getDate());
         buildCalendar();
     })
     
-    $("input[name=nextMon]").click(function(){ 
+    $("#nextMon").click(function(){ 
         $("#calendar > tbody > td").remove();
         $("#calendar > tbody > tr").remove();
         today = new Date ( today.getFullYear(), today.getMonth()+1, today.getDate());
         buildCalendar();
     })
-
 }
-
 function buildCalendar() {
     
     nowYear = today.getFullYear();
@@ -184,7 +180,6 @@ function buildCalendar() {
     firstDate = new Date(nowYear,nowMonth,1).getDate();
     firstDay = new Date(nowYear,nowMonth,1).getDay(); 
     lastDate = new Date(nowYear,nowMonth+1,0).getDate();
-
     console.log("===== firstDay ===== " + firstDay);
     console.log("===== lastDate ===== " + lastDate);
     console.log("===== firstDate ===== " + firstDate);
@@ -196,7 +191,6 @@ function buildCalendar() {
     }
     $("#year").text(nowYear);
     $("#mon").text((nowMonth+1)+"월");
-
     for (i = 0; i < firstDay; i++) { //첫번째 줄 빈칸
         $("#calendar tbody:last").append("<td></td>");
     }
